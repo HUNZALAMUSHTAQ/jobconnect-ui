@@ -50,7 +50,7 @@ export default function SignUp() {
   };
 
   const register = async () => {
-    const response = await dispatch(registerUser({ name, email, password }));
+    const response = await dispatch(registerUser({ name, email, password, role }));
     if (response) {
       message.success(authMessage);
       history.push("/pages/authentication/login");
