@@ -25,44 +25,6 @@ import axiosInterceptor from "../../../../services/axiosInterceptor";
 import axios from "axios";
 import TextArea from "antd/lib/input/TextArea";
 
-const columns = [
-  {
-    title: "Job Title",
-    dataIndex: "title",
-    key: "title",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Applications",
-    dataIndex: "applications",
-    key: "applications",
-  },
-  {
-    title: "Company",
-    dataIndex: "company",
-    key: "company",
-  },
-  {
-    title: "Salary",
-    dataIndex: "salary",
-    key: "salary",
-  },
-  {
-    title: "Location",
-    dataIndex: "location",
-    key: "location",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Edit</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
 function JobPosts() {
   const [actionUrl, setActionUrl] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,6 +38,87 @@ function JobPosts() {
   const [token, setToken] = useState(localStorage?.getItem("token"));
   const [Data, setData] = useState([]);
 
+  const columns = [
+    {
+      title: "Job Title",
+      dataIndex: "title",
+      key: "title",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Applications",
+      dataIndex: "appplications",
+      key: "applications",
+      render: (_, record) => {
+        return (
+          <Tag color={record?.appplications?.length > 0 ? "green" : "red"}>
+            {record?.appplications?.length}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: "Company",
+      dataIndex: "company",
+      key: "company",
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => {
+        console.log(record.id);
+        return (
+          <Space size="middle">
+            <a>Edit</a>
+            <a>Delete</a>
+            {user?.role === "user" && (
+              <a onClick={() => applyForJob(record.id)}>Apply</a>
+            )}
+          </Space>
+        );
+      },
+    },
+  ];
+
+  const applyForJob = async (jobId) => {
+    try {
+      console.log(jobId, "asddddddd");
+      const authToken = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+
+      const response = await axios.post(
+        `http://localhost:3001/v1/jobpost/${jobId}/apply`, // Update with your actual API endpoint
+        {},
+        config
+      );
+
+      if (response.status === 201) {
+        message.success("Job application successful");
+        // Optionally, you can trigger a refetch of job posts or update the UI accordingly.
+        // refetchJobPosts();
+      } else {
+        message.error("Cannot Reapply for a Job");
+      }
+      fetchData()
+    } catch (error) {
+      console.error("Error applying for job:", error?.message);
+      message.error("Something went wrong. Please try again.");
+    }
+  };
   const fetchData = async () => {
     try {
       const authToken = await localStorage.getItem("token");
@@ -83,15 +126,17 @@ function JobPosts() {
         headers: { Authorization: `Bearer ${authToken}` },
       };
 
-      const response = await axios.get(`http://localhost:3001/v1/jobpost`, config);
-      console.log(response)
+      const response = await axios.get(
+        `http://localhost:3001/v1/jobpost`,
+        config
+      );
+      console.log(response);
       setData(response?.data);
     } catch (error) {
       console.error("Error fetching projects:", error?.message);
     }
   };
 
-  
   const addJob = async () => {
     try {
       const authToken = await localStorage.getItem("token");
@@ -107,10 +152,14 @@ function JobPosts() {
         description,
         skills: skills?.split(" "),
         employmentType,
-        requirements: requirements?.split(" ")
-      }
-      const response = await axios.post(`http://localhost:3001/v1/jobpost`, jobdata, config);
-      console.log(response)
+        requirements: requirements?.split(" "),
+      };
+      const response = await axios.post(
+        `http://localhost:3001/v1/jobpost`,
+        jobdata,
+        config
+      );
+      console.log(response);
       fetchData();
 
       handleCancel();
@@ -118,8 +167,6 @@ function JobPosts() {
       console.error("Error fetching projects:", error?.message);
     }
   };
-  
-  
 
   useEffect(() => {
     fetchData();
@@ -141,17 +188,19 @@ function JobPosts() {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "1rem",
-        }}
-      >
-        <Button type="primary" onClick={showModal}>
-          Open Modal
-        </Button>
-      </div>
+      {user?.role == "company" && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: "1rem",
+          }}
+        >
+          <Button type="primary" onClick={showModal}>
+            Post Job
+          </Button>
+        </div>
+      )}
 
       <Modal
         title="Add Job"
@@ -243,7 +292,7 @@ function JobPosts() {
 
           <Row>
             <Col md={12} span={24} className="hp-pr-sm-0 hp-pr-12">
-              <Button block type="primary" htmlType="submit" onClick={addJob} >
+              <Button block type="primary" htmlType="submit" onClick={addJob}>
                 Add
               </Button>
             </Col>

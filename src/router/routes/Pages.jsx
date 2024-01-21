@@ -35,12 +35,14 @@ const PagesRoutes = [
     component: lazy(() => import("../../view/main/dashboard/education")),
     layout: "VerticalLayout",
     isProtected: true,
+    show: "user",
   },
   {
     path: "/pages/experience",
     component: lazy(() => import("../../view/main/dashboard/experience")),
     layout: "VerticalLayout",
     isProtected: true,
+    show: "user",
   },
   {
     path: "/pages/candidate",

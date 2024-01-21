@@ -263,7 +263,9 @@ const pages = [
         title: "Candidate Dashboard",
         icon: <Profile size={18} />,
         navLink: "/pages/candidate",
-        isCompany: true
+        isCompany: true,
+        show: "user"
+
     },
     {
         id: "profile-jobpost",
@@ -277,15 +279,16 @@ const pages = [
         title: "Education",
         icon: <Profile size={18} />,
         navLink: "/pages/education",
-        isCompany: false
-
+        isCompany: false,
+        show: "user"
     },
     {
         id: "profile-experience",
         title: "Experience",
         icon: <Profile size={18} />,
         navLink: "/pages/experience",
-        isCompany: false
+        isCompany: false,
+        show: "user"
 
     },
     // {
