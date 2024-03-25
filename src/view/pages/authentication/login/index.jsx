@@ -23,7 +23,7 @@ export default function Login() {
 
   useEffect(()=>{
     if(isLoggedIn){
-      history.push('/')
+      history.push('/pages/workspace')
     }
   },[isLoggedIn])
 

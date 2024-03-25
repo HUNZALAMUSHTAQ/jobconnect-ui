@@ -15,7 +15,14 @@ import {
 
 import { RiCloseFill, RiCalendarLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, updateUserInformation } from "../../../redux/auth/authActions";
+import {
+  updateProfilePicture,
+  updateUser,
+  updateUserInformation,
+} from "../../../redux/auth/authActions";
+import { UploadOutlined } from "@ant-design/icons";
+import { message, Upload } from "antd";
+
 
 export default function InfoProfile() {
   const user = useSelector((state) => state.auth?.user);
@@ -30,35 +37,60 @@ export default function InfoProfile() {
   const [preferanceModalVisible, setPreferanceModalVisible] = useState(false);
 
   const listTitle = "hp-p1-body";
-  const listResult = "hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0";
+  const listResult =
+    "hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0";
   const dividerClass = "hp-border-color-black-40 hp-border-color-dark-80";
 
+  const props = {
+    name: "photo",
+    action: "http://localhost:3001/v1/users/profile/upload",
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("token")}`,
+  
+    },
+    onChange(info) {
+      
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        console.log(info, "URL");
+        message.success(`${info.file.name} file uploaded successfully`);
+        dispatch(updateProfilePicture({src: info?.file?.response?.url}))
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   useEffect(() => {
-    setFirstName(user?.firstName || '');
-    setLastName(user?.lastName || '');
-    setPhoneNumber(user?.phoneNumber || '')
-    setAddress(user?.address || '')
-  }, [])
+    setFirstName(user?.firstName || "");
+    setLastName(user?.lastName || "");
+    setPhoneNumber(user?.phoneNumber || "");
+    setAddress(user?.address || "");
+  }, []);
 
   const updateUserInfo = () => {
-    const obj={ id: user?.id}
-    if(firstName){
-      obj.firstName=firstName
-    }if(lastName){
-      obj.lastName=lastName
-    }if(phoneNumber){
-      obj.phoneNumber=phoneNumber
+    const obj = { id: user?.id };
+    if (firstName) {
+      obj.firstName = firstName;
     }
-    if(address){
-      obj.address= address
+    if (lastName) {
+      obj.lastName = lastName;
     }
-    dispatch(updateUserInformation(obj))
-    setAddress("")
-    setFirstName("")
-    setLastName("")
-    setPhoneNumber("")
-    contactModalCancel()
-  }
+    if (phoneNumber) {
+      obj.phoneNumber = phoneNumber;
+    }
+    if (address) {
+      obj.address = address;
+    }
+    dispatch(updateUserInformation(obj));
+    setAddress("");
+    setFirstName("");
+    setLastName("");
+    setPhoneNumber("");
+    contactModalCancel();
+  };
   const contactModalShow = () => {
     setContactModalVisible(true);
   };
@@ -88,18 +120,36 @@ export default function InfoProfile() {
           <RiCloseFill className="remix-icon text-color-black-100" size={24} />
         }
       >
-        <Form layout="vertical" name="basic" initialValues={{ remember: true, firstName, lastName, address, phoneNumber }}>
+        <Form
+          layout="vertical"
+          name="basic"
+          initialValues={{
+            remember: true,
+            firstName,
+            lastName,
+            address,
+            phoneNumber,
+          }}
+        >
           <Form.Item label="First Name" name="firstName">
-            <Input value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
+            <Input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
           </Form.Item>
 
           <Form.Item label="Last Name" name="lastName">
-            <Input value={lastName} onChange={(e)=>setLastName(e.target.value)} />
+            <Input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </Form.Item>
 
-
           <Form.Item label="Phone" name="phone">
-            <Input value={phoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} />
+            <Input
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
           </Form.Item>
 
           {/* <Form.Item label="Date of Birth" name="dateofbirth">
@@ -112,7 +162,11 @@ export default function InfoProfile() {
           </Form.Item> */}
 
           <Form.Item label="Address" name="address">
-            <Input.TextArea rows={3} value={address} onChange={(e)=>setAddress(e.target.value)} />
+            <Input.TextArea
+              rows={3}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
           </Form.Item>
 
           <Row>
@@ -190,7 +244,9 @@ export default function InfoProfile() {
 
       <Row align="middle" justify="space-between">
         <Col md={12} span={24}>
-          <h3><FormattedMessage id="sidebar-apps-contact" /></h3>
+          <h3>
+            <FormattedMessage id="sidebar-apps-contact" />
+          </h3>
         </Col>
 
         <Col md={12} span={24} className="hp-profile-action-btn hp-text-right">
@@ -205,37 +261,47 @@ export default function InfoProfile() {
         >
           <ul>
             <li>
-              <span className={listTitle}><FormattedMessage id="pi-fname" /></span>
-              <span className={listResult}>{user?.firstName} {user?.lastName}</span>
+              <span className={listTitle}>
+                <FormattedMessage id="pi-fname" />
+              </span>
+              <span className={listResult}>
+                {user?.firstName} {user?.lastName}
+              </span>
             </li>
 
-            <li>
-              <span className={listTitle}><FormattedMessage id="pi-fn" /></span>
+            {/* <li>
+              <span className={listTitle}>
+                <FormattedMessage id="pi-fn" />
+              </span>
               <span className={listResult}>{user?.firstName}</span>
             </li>
             <li>
-              <span className={listTitle}><FormattedMessage id="pi-ln" /></span>
+              <span className={listTitle}>
+                <FormattedMessage id="pi-ln" />
+              </span>
               <span className={listResult}>{user?.lastName}</span>
-            </li>
-
-              
+            </li> */}
 
             <li className="hp-mt-18">
-              <span className={listTitle}><FormattedMessage id="pi-email" /></span>
+              <span className={listTitle}>
+                <FormattedMessage id="pi-email" />
+              </span>
               <span className={listResult}>{user?.email}</span>
             </li>
 
             <li className="hp-mt-18">
-              <span className={listTitle}><FormattedMessage id="pi-phone" /></span>
+              <span className={listTitle}>
+                <FormattedMessage id="pi-phone" />
+              </span>
               <a className={listResult} href="tel:+900374323">
                 {user?.phoneNumber}
               </a>
             </li>
 
-          
-
             <li className="hp-mt-18">
-              <span className={listTitle}><FormattedMessage id="pi-address" /></span>
+              <span className={listTitle}>
+                <FormattedMessage id="pi-address" />
+              </span>
               <span className={listResult}>{user?.address}</span>
             </li>
           </ul>
@@ -244,10 +310,13 @@ export default function InfoProfile() {
 
       <Divider className={dividerClass} />
       <Row align="middle" justify="space-between">
-        {/* <Col md={12} span={24}>
-          <h3><FormattedMessage id="tokens" /></h3>
-        </Col> */}
+        <Col md={12} span={24}>
+          <h3>Upload Image</h3>
+        </Col>
 
+        <Upload {...props}>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        </Upload>
         {/* <Col
           span={24}
           className="hp-profile-content-list hp-mt-8 hp-pb-sm-0 hp-pb-42"

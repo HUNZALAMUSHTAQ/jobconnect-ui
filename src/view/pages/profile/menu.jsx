@@ -44,7 +44,7 @@ export default function MenuProfile(props) {
   const splitLocation = pathname.split("/");
   const user = useSelector((state) => state.auth?.user);
   // Redux
-  const customise = useSelector(state => state.customise)
+  const customise = useSelector((state) => state.customise);
 
   return (
     <Col flex="240px" className="hp-profile-menu hp-py-24">
@@ -52,11 +52,20 @@ export default function MenuProfile(props) {
         <div className="hp-profile-menu-header hp-mt-md-16 hp-text-center">
           {/* {moreBtn()} */}
 
-          {/* <Badge count={12}>
-            <Avatar size={80} src={avatar} />
-          </Badge> */}
+          <Badge count={12}>
+            <Avatar
+              size={150}
+              shape="circle" // Change shape to circle
+              style={{
+                width: "150px",
+                height: "150px",
+                borderRadius: "50%", 
+                overflow: "hidden", 
+              }}
+              src={`http://localhost:3000/${user?.profilePicture}`}
+            />
+          </Badge>
 
-          <h3 className="hp-mt-24 hp-mb-4">{`${user?.firstName} ${user?.lastName}`}</h3>
           <a href={`mailto:${user?.email}`} className="hp-p1-body">
             {user?.email}
           </a>
@@ -72,9 +81,12 @@ export default function MenuProfile(props) {
             icon={<User set="curved" className={menuIconClass} />}
             className={`
               hp-mb-16 hp-pl-24 hp-pr-32
-              ${splitLocation[splitLocation.length - 1] === "personel-information"
-                ? "ant-menu-item-selected"
-                : "ant-menu-item-selected-in-active"}
+              ${
+                splitLocation[splitLocation.length - 1] ===
+                "personel-information"
+                  ? "ant-menu-item-selected"
+                  : "ant-menu-item-selected-in-active"
+              }
             `}
             onClick={props.onCloseDrawer}
           >
@@ -88,15 +100,16 @@ export default function MenuProfile(props) {
             icon={<Password set="curved" className={menuIconClass} />}
             className={`
               hp-mb-16 hp-pl-24 hp-pr-32
-              ${splitLocation[splitLocation.length - 1] === "password-change"
-                ? "ant-menu-item-selected"
-                : "ant-menu-item-selected-in-active"}
+              ${
+                splitLocation[splitLocation.length - 1] === "password-change"
+                  ? "ant-menu-item-selected"
+                  : "ant-menu-item-selected-in-active"
+              }
             `}
             onClick={props.onCloseDrawer}
           >
             <Link to="/pages/profile/password-change">Password Change</Link>
           </Menu.Item>
-
         </Menu>
       </div>
 

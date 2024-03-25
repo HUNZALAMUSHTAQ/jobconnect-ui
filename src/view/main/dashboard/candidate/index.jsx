@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { Col, Row, Upload, message } from "antd";
 import JobConnectLogo from "../../../../assets/images/logo/logo2.jpeg";
 import JobLogo from "../../../../assets/images/logo/job.png";
-import SaveLogo from "../../../../assets/images/logo/save.png";
+import SaveLogo from "../../../../assets/images/logo/floppy-disk.svg";
+import BriefCaseIcon from "../../../../assets/images/logo/briefcase.png";
 
 import { Avatar, Space } from "antd";
 import {
@@ -22,20 +23,20 @@ function Workspace() {
   console.log(user);
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", rowGap: "1.5rem" }}>
       <Row>
-        <Col span={4}>
+        <Col span={2}>
           <img
-            className="hp-logo"
-            height={100}
-            width={100}
+            style={{
+              width: "4rem",
+              borderRadius: "50%",
+            }}
             src={JobConnectLogo}
             alt="logo"
           />
         </Col>
-        <Col span={20}>
+        <Col span={22}>
           <Row> {user?.name}</Row>
-
           <Row>
             <Col span={12}>Location: {user?.location}</Col>
             <Col span={12}>Email: {user?.email}</Col>
@@ -43,50 +44,59 @@ function Workspace() {
         </Col>
       </Row>
 
-      <Row
-        style={{
-          marginTop: 10,
-          border: "1px black solid",
-          alignItems: "center",
-          padding: 10,
-        }}
-      >
-        <Col span={4}>
-          <img
-            className="hp-logo"
-            height={100}
-            width={100}
-            src={JobLogo}
-            alt="logo"
-          />
-        </Col>
-        <Col span={8}>
-          <Row>2</Row>
-          Applied Jobs
-        </Col>
-      </Row>
-
-      <Row
-        style={{
-          marginTop: 10,
-          border: "1px black solid",
-
-          alignItems: "center",
-          padding: 10,
-        }}
-      >
-        <Col span={4}>
-          <img
-            className="hp-logo"
-            height={200}
-            width={100}
-            src={SaveLogo}
-            alt="logo"
-          />
-        </Col>
-        <Col span={8}>
-          <Row>2</Row>
-          Saved Jobs
+      <Row>
+        <Col
+          span={24}
+          style={{ display: "flex", flexDirection: "column", rowGap: "0.5rem" }}
+        >
+          <Row
+            style={{
+              marginTop: 10,
+              border: "1px solid #dadfe1",
+              alignItems: "center",
+              padding: 10,
+              borderRadius: "12px",
+            }}
+          >
+            <Col
+              span={24}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                columnGap: "1.5rem",
+                cursor: "pointer",
+              }}
+            >
+              <img style={{ width: "3.5rem" }} src={BriefCaseIcon} alt="logo" />
+              <Row>
+                2 <br /> Job Applications
+              </Row>
+            </Col>
+          </Row>
+          <Row
+            style={{
+              marginTop: 10,
+              border: "1px solid #dadfe1",
+              alignItems: "center",
+              padding: 10,
+              borderRadius: "12px",
+            }}
+          >
+            <Col
+              span={24}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                columnGap: "1.5rem",
+                cursor: "pointer",
+              }}
+            >
+              <img style={{ width: "3.5rem" }} src={SaveLogo} alt="logo" />
+              <Row>
+                2 <br /> Total Job Applications
+              </Row>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </div>

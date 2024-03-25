@@ -18,7 +18,9 @@ const authReducer = (state = initialState, action) => {
         
       case "SET_LOADING":
         return { ...state, loading: action.loading };
-      
+      case "SET_PROFILE_PICTURE":
+        console.log(action, "action")
+          return { ...state, user: {...state.user, profilePicture: action.src} };
       case "SET_ERROR":
         return { ...state, error: action.error };
      

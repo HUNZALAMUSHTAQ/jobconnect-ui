@@ -18,7 +18,6 @@ export default function LeftContent() {
     <Col lg={12} span={24} style={{display: "flex", alignItems:"center", justifyContent: "center"}} className="">
       {/* JobConnect Sidebar */}
       <img src={JobConnectLogo} alt="logo" height="50%" width="50%" />
-
     </Col>
   );
 };

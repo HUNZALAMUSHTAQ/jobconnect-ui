@@ -1,7 +1,6 @@
 import { lazy } from "react";
 
 const PagesRoutes = [
-
   //Workspace
 
   {
@@ -10,6 +9,7 @@ const PagesRoutes = [
     layout: "VerticalLayout",
     isProtected: true,
   },
+
   {
     path: "/pages/jobposts",
     component: lazy(() => import("../../view/main/dashboard/joposts")),
@@ -85,14 +85,12 @@ const PagesRoutes = [
     component: lazy(() => import("../../view/pages/pricing")),
     layout: "VerticalLayout",
     isProtected: true,
-
   },
   {
     path: "/pages/profile/personel-information",
     component: lazy(() => import("../../view/pages/profile")),
     layout: "VerticalLayout",
     isProtected: true,
-
   },
   {
     path: "/pages/profile/password-change",
@@ -113,6 +111,12 @@ const PagesRoutes = [
     isProtected: true,
   },
 
+  {
+    path: "/",
+    component: lazy(() => import("../../view/pages/HomePage")),
+    layout: "FullLayout",
+    isProtected: false,
+  },
 ];
 
 export default PagesRoutes;

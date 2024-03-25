@@ -261,4 +261,16 @@ export const updateUserPassword = (params) => {
         return false;
       });
   };
+
+  
+};
+
+
+export const updateProfilePicture = (params) => {
+  return async (dispatch) => {
+    dispatch({
+      type: "SET_PROFILE_PICTURE",
+      src: params.src,
+    });
+  }
 };

@@ -265,10 +265,11 @@ function JobPosts() {
 
           <Row gutter={8}>
             <Col span={12}>
-              <Form.Item label="Salary" name="Salary">
+              <Form.Item label="Salary" name="">
                 <Input
                   value={salary}
                   onChange={(e) => setsalary(e.target.value)}
+                  type="number"
                 />
               </Form.Item>
             </Col>
